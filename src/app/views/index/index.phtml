@@ -1,0 +1,37 @@
+<?php
+
+echo "<h1>Hello World</h1>";
+
+echo PHP_EOL;
+
+echo $this->tag->linkTo(
+    'addProduct',
+    'Add Product Here!'
+);
+echo "<br>";
+echo $this->tag->linkTo(
+    'addProduct/productlist',
+    'Product List!'
+);
+echo "<br>";
+
+echo $this->tag->linkTo(
+    'order',
+    'Place Order!'
+);
+
+echo "<br>";
+
+echo $this->tag->linkTo(
+    'order/orderlist',
+    'Order List!'
+);
+
+echo "<br>";
+
+echo $this->tag->linkTo(
+    'setting',
+    'Settings!'
+);
+
+
