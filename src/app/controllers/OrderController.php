@@ -7,7 +7,7 @@ class OrderController extends Controller
 {
     public function indexAction()
     {
-        
+        //$this->eventManager->fire("application:beforeHandleRequest", $this);
        
     }
 

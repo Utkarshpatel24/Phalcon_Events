@@ -4,7 +4,9 @@
 
 
 use Phalcon\Di\Injectable;
-
+use Phalcon\Acl\Adapter\Memory;
+use Phalcon\Acl\Role;
+use Phalcon\Acl\Component;
 
 
 class EventListener extends Injectable
@@ -38,6 +40,53 @@ class EventListener extends Injectable
             $order->zipcode = $setting->zipcode;
         }
         return $order;
+    }
+
+    public function beforeHandleRequest($data)
+    {
+        //$data = $data->getData();
+        
+       
+        $controller = $this->router->getControllerName();
+        if($controller == null)
+        $controller = '';
+        $action = $this->router->getActionName();
+        if($action == null)
+        $action = '';
+        $aclfile = APP_PATH. '/security/acl.cache';
+        if (true != is_file($aclfile)) {
+            $acl =new Memory();
+
+            $acl->addRole('manager');
+            $acl->addRole('admin');
+            $acl->addComponent(
+                'order',
+                [
+                    'orderlist'
+                ]
+            );
+            $acl->allow('admin', '*', '*');
+            
+
+            file_put_contents(
+                $aclfile,
+                serialize($acl)
+            );
+        } else {
+            $acl = unserialize(
+                file_get_contents($aclfile)
+            );
+         
+        }
+        $role =$this->request->getQuery("role");
+        $role = $role == ''? 'admin' : $role;
+        if (true === $acl->isAllowed($role, $controller, $action)) {
+            echo "Access Granted";
+        } else {
+            echo "Access Denied";
+            die();
+        }
+
     }
 
 }

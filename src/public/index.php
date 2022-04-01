@@ -126,6 +126,11 @@ $eventManager->attach(
     new EventListener()
 );
 
+$eventManager->attach(
+    "application:beforeHandleRequest",
+    new EventListener() 
+);
+$application->setEventsManager($eventManager);
 $container->set(
     "eventManager",
     function() use ($eventManager) {
